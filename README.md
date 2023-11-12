@@ -11,6 +11,7 @@ If you simply want to generate data at SF `k` for every system we support, run:
 ./reproduce_all.sh <k>
 ```
 This runs all queries and creates plots in `/plots/sf_<k>.pdf`.
+The raw data containing the latency measurements is in the root directory `results_<system>_<k>.csv`.
 
 You can be more fine-grained in what you are reproducing as well.
 If you for example want to reproduce DuckDB at SF0.1, simply run:
@@ -19,7 +20,7 @@ pip3 install -r requirements.txt
 ./reproduce_duckdb.py 0.1
 ./plot.py 0.1 duckdb
 ```
-This runs all queries and creates a plot in `/plots/sf_0.1.pdf`.
+This runs all queries and creates a plot in `/plots/sf_0.1.pdf`. 
 
 ## Example Plot
 You can find an example plot in `example_plots`. The plots are bar plots for all TPC-H queries:

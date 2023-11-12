@@ -64,7 +64,7 @@ if __name__ == '__main__':
         for file in os.listdir('tpch'):
             if file != 'schema.sql' and file != 'load.sql':
                 q_name = file[:-4]
-                print(f'Running query {q_name}')
+                print(f'Reproducing q{q_name} on DuckDB')
                 for _ in range(args.repeat):
                     dur = run_query(con, q_name)
                     # Last item is always 0, since DuckDB is never stalled on compilation.

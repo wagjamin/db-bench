@@ -24,8 +24,20 @@ file_shuffle () {
   fi
 }
 
+file_clean () {
+  if [[ $machine = 'Linux' ]]; then
+    sed -i $1 data/*.tbl
+  else
+    sed -i '' $1 data/*.tbl
+  fi
+}
+
+# TPC-H tool has some issues with file permissions. Reset everything from 
+# a potential previous run to start with a clean slate.
+rm -rf tpch-dbgen
+rm -rf data
+
 # Clone TPC-H dbgen tool
-rm -rf tpch-dben
 git clone https://github.com/electrum/tpch-dbgen.git
 cd tpch-dbgen
 # Build it
@@ -39,7 +51,11 @@ mv -f tpch-dbgen/*.tbl data
 # Drop tpch-dbgen again
 rm -rf tpch-dbgen
 
-# Shuffle data.
+# Fix permissions if TPCH-dbgen had some issues
+chmod -R 0777 data 
+
+# Shuffle data. This leads to a more fair evaluation as data is not ordered with great
+# hash table locality during join probes.
 cd data 
 echo "Shuffling Generated Data"
 file_shuffle "lineitem"
@@ -54,16 +70,16 @@ if [[ $# -ge 2 ]]; then
   if [[ $2 == "duckdb" ]]; then
     echo "Cleaning up .tbl for DuckDB"
     # Remove trailing '|' which make this invalid CSV
-    sed -i '' 's/.$//' data/*.tbl
+    file_clean 's/.$//'
   fi
   if [[ $2 == "umbra" ]]; then
     echo "Cleaning up .tbl for Umbra"
     # Remove trailing '|' which make this invalid CSV
-    sed -i '' 's/.$//' data/*.tbl
+    file_clean 's/.$//'
   fi
   if [[ $2 == "hyper" ]]; then
     echo "Cleaning up .tbl for Hyper"
     # Remove trailing '|' which make this invalid CSV
-    sed -i '' 's/.$//' data/*.tbl
+    file_clean 's/.$//' 
   fi
 fi

@@ -28,12 +28,13 @@ if [[ ! -f umbra_data/tpch_${1} ]]; then
 fi
 
 # Run queries
-for qid in {1..23}
+for qid in {1..22}
 do
+    echo "Reproducing q${qid} on Umbra"
     # LLVM JIT Compilation
-    COMPILATIONMODE=o ${UMBRA_BIN} umbra_data/tpch_${1} `for i in $(seq 1 10); do echo tpch/${qid}.sql; done` | grep 'execution' > umbra_data/q${qid}_o_res_${1}.csv
+    COMPILATIONMODE=o ${UMBRA_BIN} umbra_data/tpch_${1} `for i in $(seq 1 10); do echo tpch/${qid}.sql; done` | grep 'execution' > umbra_data/${qid}_o_res_${1}.csv
     # Adaptive execution using the flying start backend
-    COMPILATIONMODE=a ${UMBRA_BIN} umbra_data/tpch_${1} `for i in $(seq 1 10); do echo tpch/${qid}.sql; done` | grep 'execution' > umbra_data/q${qid}_a_res_${1}.csv
+    COMPILATIONMODE=a ${UMBRA_BIN} umbra_data/tpch_${1} `for i in $(seq 1 10); do echo tpch/${qid}.sql; done` | grep 'execution' > umbra_data/${qid}_a_res_${1}.csv
 done
 
 # Post-process umbra dumps

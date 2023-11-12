@@ -1,8 +1,9 @@
 #!/bin/bash
-#
+
 if [[ $# < 1 ]]; then
   echo "Run as ./generate_tpch.sh <scale factor>" 
   exit 1
+fi
 
 # Install requirements.
 pip3 install -r requirements.txt
@@ -19,5 +20,5 @@ echo "Reproducing Umbra"
 echo "Generating Plots"
 ./plot.py $1 duckdb umbra_adaptive umbra_optimized
 
-echo "Result plots can be found in `plots/sf_${1}.pdf`"
+echo "Result plots can be found in plots/sf_${1}.pdf"
 

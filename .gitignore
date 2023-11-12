@@ -1,0 +1,10 @@
+.idea
+hyperd.log
+__pycache__
+data
+plots
+tpch-dbgen
+result_**
+tpch.hyper
+raw_data
+umbra_data

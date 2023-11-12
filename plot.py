@@ -85,3 +85,4 @@ if __name__ == '__main__':
     # plt.show()
     os.makedirs('plots', exist_ok=True)
     plt.savefig(f'plots/sf_{sf}.pdf', bbox_inches='tight', dpi=300)
+    plt.savefig(f'plots/sf_{sf}.png', bbox_inches='tight', dpi=300)
